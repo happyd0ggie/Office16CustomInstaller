@@ -20,7 +20,7 @@ optional arguments:
   -k ACTION   install | download
   -p PRODUCT  product to install, e.g. Word/PowerPoint/Excel/Outlook/Access/In
               foPath/Groove/Lync/OneDrive/Published/Project/Visio/SharePointDe
-              signer
+              signer/Outlook
   -e EDITION  product edition, e.g. 64/32
   -l LANG     install language, e.g. en-us/zh-cn
 ```
