@@ -12,7 +12,7 @@ class Setup(object):
         self.config_file = 'configuration.xml'
         self.lang = self._get_product_lang()
         self.all_products = ['Word', 'Excel', 'PowerPoint', 'Access',
-            'Groove', 'InfoPath', 'Lync', 'OneNote', 'Project',
+            'Groove', 'InfoPath', 'Lync', 'OneNote', 'Project', 'Outlook',
             'Publisher', 'Visio', 'SharePointDesigner', 'OneDrive']
         self.product_list_to_install = self._get_product_list()
         self.product_edition = self._get_product_edition()
