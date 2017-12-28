@@ -12,8 +12,8 @@ Install Microsoft Office 2016 individual applications.
 python3 setup.py -h
 usage: setup.py [-h] [-k ACTION] [-p PRODUCT] [-e EDITION] [-l LANG]
 
-Microsoft Office 2016 downloader/installer example: python setup.py --action
-install --product word --edition 64 --lang zh-cn
+Microsoft Office 2016 downloader/installer example: python setup.py -k
+install -p word -e 64 -l zh-cn
 
 optional arguments:
   -h, --help  show this help message and exit
