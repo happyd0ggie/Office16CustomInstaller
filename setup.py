@@ -6,14 +6,17 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
+ALL_PRODUCTS = ['Word', 'Excel', 'PowerPoint', 'Access',
+    'Groove', 'InfoPath', 'Lync', 'OneNote', 'Project', 'Outlook',
+    'Publisher', 'Visio', 'SharePointDesigner', 'OneDrive']
+
+
 class Setup(object):
     def __init__(self, args):
         self.args = args
         self.config_file = 'configuration.xml'
         self.lang = self._get_product_lang()
-        self.all_products = ['Word', 'Excel', 'PowerPoint', 'Access',
-            'Groove', 'InfoPath', 'Lync', 'OneNote', 'Project', 'Outlook',
-            'Publisher', 'Visio', 'SharePointDesigner', 'OneDrive']
+        self.all_products = ALL_PRODUCTS
         self.product_list_to_install = self._get_product_list()
         self.product_edition = self._get_product_edition()
         self._init_config_file()
@@ -84,15 +87,19 @@ class Setup(object):
             pass
 
 def get_argparser():
-    desc = '''Microsoft Office 2016 downloader/installer\n
-        example:\n
-            python setup.py --action install --product word --edition 64 --lang zh-cn
-    '''
-    parser = argparse.ArgumentParser(prog=sys.argv[0], description=desc)
-    parser.add_argument('-k', dest='action', help='install | download')
-    parser.add_argument('-p', dest='product', help='product to install, e.g. Word/PowerPoint/Excel/Outlook/Access/InfoPath/Groove/Lync/OneDrive/Published/Project/Visio/SharePointDesigner')
-    parser.add_argument('-e', dest='edition', help='product edition, e.g. 64/32')
-    parser.add_argument('-l', dest='lang', help='install language, e.g. en-us/zh-cn')
+    parser = argparse.ArgumentParser(
+        prog=sys.argv[0],
+        description='Microsoft Office 2016 downloader/installer',
+        epilog=('e.g.: python setup.py --action install --product word '
+                '--edition 64 --lang zh-cn'))
+    parser.add_argument('-a', '--action', action='store',
+        default='install', help='install | download')
+    parser.add_argument('-p', '--product', action='store', required=True,
+        choices=ALL_PRODUCTS, help='product to install')
+    parser.add_argument('-e', '--edition', action='store', default='64',
+        help='product edition, e.g. 64/32')
+    parser.add_argument('-l', '--lang', action='store', default='zh-cn',
+        help='install language, e.g. en-us/zh-cn')
     return parser
 
 def main():
