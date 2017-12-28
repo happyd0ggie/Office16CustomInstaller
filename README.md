@@ -9,20 +9,24 @@ Install Microsoft Office 2016 individual applications.
 * run `python3 setup.py -h` to see usage.
 
 ```
-python3 setup.py -h
-usage: setup.py [-h] [-k ACTION] [-p PRODUCT] [-e EDITION] [-l LANG]
+python3 setup.py --help
+usage: setup.py [-h] [-a ACTION] -p
+                {Word,Excel,PowerPoint,Access,Groove,InfoPath,Lync,OneNote,Project,Outlook,Publisher,Visio,SharePointDesigner,OneDrive}
+                [-e EDITION] [-l LANG]
 
-Microsoft Office 2016 downloader/installer example: python setup.py -k
-install -p word -e 64 -l zh-cn
+Microsoft Office 2016 downloader/installer
 
-optional arguments:
-  -h, --help  show this help message and exit
-  -k ACTION   install | download
-  -p PRODUCT  product to install, e.g. Word/PowerPoint/Excel/Outlook/Access/In
-              foPath/Groove/Lync/OneDrive/Published/Project/Visio/SharePointDe
-              signer/Outlook
-  -e EDITION  product edition, e.g. 64/32
-  -l LANG     install language, e.g. en-us/zh-cn
+  -h, --help            show this help message and exit
+  -a ACTION, --action ACTION
+                        install | download
+  -p {Word,Excel,PowerPoint,Access,Groove,InfoPath,Lync,OneNote,Project,Outlook,Publisher,Visio,SharePointDesigner,OneDrive}, --product {Word,Excel,PowerPoint,Access,Groove,InfoPath,Lync,OneNote,Project,Outlook,Publisher,Visio,SharePointDesigner,OneDrive}
+                        product to install
+  -e EDITION, --edition EDITION
+                        product edition, e.g. 64/32
+  -l LANG, --lang LANG  install language, e.g. en-us/zh-cn
+
+e.g.: python setup.py --action install --product word --edition 64 --lang zh-
+cn
 ```
 # Basic steps
 * Create a directory
