@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+This script enable custom installation of Microsoft Office suite.
+You can install/uninstall specific product.
+"""
+
 import argparse
 import os
 import sys
 import xml.etree.ElementTree as ET
 
 ALL_PRODUCTS = ['Word', 'Excel', 'PowerPoint', 'Access',
-    'Groove', 'InfoPath', 'Lync', 'OneNote', 'Project', 'Outlook',
-    'Publisher', 'Visio', 'SharePointDesigner', 'OneDrive']
-
+                'Groove', 'InfoPath', 'Lync', 'OneNote', 'Project', 'Outlook',
+                'Publisher', 'Visio', 'SharePointDesigner', 'OneDrive']
 
 class Setup(object):
+    """Microsoft Office 2016 custom installer wrapper."""
     def __init__(self, args):
         self.args = args
         self.config_file = 'configuration.xml'
@@ -23,6 +28,17 @@ class Setup(object):
         self._gen_config_file()
 
     def _get_product_list(self):
+        """Get products to be installed/uninstalled..
+
+        Get products to be installed/uninstalled.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+
+        """
         product_list = []
         if ',' in self.args.product:
             product_list.extend(self.args.product.split(','))
@@ -32,33 +48,71 @@ class Setup(object):
         return product_list
 
     def _get_product_edition(self):
+        """Get product edition to be used.
+
+        Get product edition to be used.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+
+        """
         return self.args.edition
 
     def _get_product_lang(self):
+        """Get product language to be used.
+
+        Get product language to be used.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+
+        """
         return self.args.lang
 
     def _init_config_file(self):
-        init_xml_str1 = '<Configuration>'
-        init_xml_str2 = '    <Add SourcePath="Office" Branch="Current" OfficeClientEdition="64">'
-        init_xml_str3 = '        <Product ID="ProPlusRetail">'
-        init_xml_str4 = '            <Language ID="zh-cn" />'
-        init_xml_str5 = '        </Product>'
-        init_xml_str6 = '    </Add>'
-        init_xml_str7 = '</Configuration>'
-        
+        """Initialize configuration file.
+
+        Initialize configuration file template.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+        """
+        print('Initializing Configuration File'.center(60, '='))
+        init_xml_str = ('<Configuration>\n'
+                        '    <Add SourcePath="Office" Branch="Current" OfficeClientEdition="64">\n'
+                        '        <Product ID="ProPlusRetail">\n'
+                        '            <Language ID="zh-cn" />\n'
+                        '        </Product>\n'
+                        '    </Add>\n'
+                        '</Configuration>\n')
+
         if os.path.exists(self.config_file):
             os.unlink(self.config_file)
 
-        with open(self.config_file, 'w') as f:
-            f.write(init_xml_str1 + '\n')
-            f.write(init_xml_str2 + '\n')
-            f.write(init_xml_str3 + '\n')
-            f.write(init_xml_str4 + '\n')
-            f.write(init_xml_str5 + '\n')
-            f.write(init_xml_str6 + '\n')
-            f.write(init_xml_str7 + '\n')
+        open(self.config_file, 'w').write(init_xml_str + '\n')
 
     def _gen_config_file(self):
+        """Generate configuration file.
+
+        Generate configuration file, which will be used to custom
+        installation.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+        """
+        print('Generating Configuration File'.center(60, '='))
         tree = ET.parse(self.config_file)
         root = tree.getroot()
 
@@ -79,40 +133,51 @@ class Setup(object):
         tree.write(self.config_file)
 
     def run(self):
+        """Class entry point.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+        """
         if self.args.action == 'download':
             os.system('.\setup.exe /download {0}'.format(self.config_file))
         elif self.args.action == 'install':
             os.system('.\setup.exe /configure {0}'.format(self.config_file))
         else:
             pass
+        os.unlink(self.config_file)
 
 def get_argparser():
+    """Generate a command line argument parser."""
     parser = argparse.ArgumentParser(
         prog=sys.argv[0],
         description='Microsoft Office 2016 downloader/installer',
         epilog=('e.g.: python setup.py --action install --product word '
                 '--edition 64 --lang zh-cn'))
     parser.add_argument('-a', '--action', action='store',
-        default='install', help='install | download')
+                        default='install', help='install | download')
     parser.add_argument('-p', '--product', action='store', required=True,
-        choices=ALL_PRODUCTS, help='product to install')
+                        choices=ALL_PRODUCTS, help='product to install')
     parser.add_argument('-e', '--edition', action='store', default='64',
-        help='product edition, e.g. 64/32')
+                        help='product edition, e.g. 64/32')
     parser.add_argument('-l', '--lang', action='store', default='zh-cn',
-        help='install language, e.g. en-us/zh-cn')
+                        help='install language, e.g. en-us/zh-cn')
     return parser
 
 def main():
+    """Program entry point."""
     parser = get_argparser()
     args = parser.parse_args()
 
-    if (args.action == None or args.product == None or 
-        args.lang == None or args.edition == None):
+    if (args.action is None or args.product is None or
+            args.lang is None or args.edition is None):
         parser.print_usage()
         sys.exit(1)
 
     setup = Setup(args)
-    setup.run()    
+    setup.run()
 
 if __name__ == '__main__':
     main()
